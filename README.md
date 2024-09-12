@@ -1,95 +1,126 @@
-# RedBus Data Scrapping and Dynamic Filtering Application
-This project is a Streamlit-based web application designed to help users filter and display bus services from the RedBus dataset. The project fetches data from a MySQL database and offers users a set of customizable filters to narrow down bus options based on their preferences.
+# RedBus Data Scraping and Dynamic Filtering Application
+
+This project is a **Streamlit-based web application** designed to help users filter and display bus services from the **RedBus dataset**. The project fetches data from a **MySQL database**, which is populated by scraping data from the **RedBus website** using **Selenium**. The web application offers users a set of customizable filters to narrow down bus options based on their preferences, such as **route, seat type, A/C type, ratings, fare, and departure time**.
 
 ## Features
-### 1. Data Scraping Using Selenium
-Data is scraped from the dynamic RedBus website using Selenium and stored in a MySQL database. 
-The scraping script goes through 12 RTC's. It navigates through all pages under each RTC Card and goes through each route. Clicks on available View Buses Buttons, scrolls to the bottom of the page and collect bus routes, bus route links, bus types, timings, fare, and seat availability of all buses available. It ensures that proper time is provied to load all data.
 
-### 2. MySQ Database Interaction
-The project connects to MySQL database to fetch and manage bus route data.
-It uses Pandas to manipulate the fetched data, including categorizing seat types (Seater, Sleeper, Semi Sleeper) based on the type of buses.
+### 1. **Data Scraping Using Selenium**
+- Data is scraped from the dynamic RedBus website using **Selenium** and stored in a **MySQL database**.
+- The scraping script navigates through **12 RTCs**, iterating over all routes in all pages under each RTC Card.
+- It collects crucial bus information such as **routes, route links, bus types, timings, fare, and seat availability**.
+- The script ensures that sufficient time is provided to load all the data, handles pagination, and interacts with the "View Buses" buttons.
 
-### 3. User Interface using Streamlit
-The user interface is built using Streamlit, offering a clean and intuitive way for users to filter bus services based on routes, bus type, A/C type, rating, fare and Time.
+### 2. **MySQL Database Interaction**
+- The project interacts with a **MySQL database** to fetch and manage bus route data.
+- **Pandas** is used to manipulate the data, including categorizing seat types (e.g., Seater, Sleeper, Semi Sleeper) based on the bus descriptions.
 
-## Home Page:
-Displays a welcome message with a bus image.
-![Home Screen](Images/Home_Screen.png)
+### 3. **User Interface using Streamlit**
+- The user interface is built using **Streamlit**, providing a clean and intuitive way for users to filter bus services.
+- Users can filter buses based on various criteria, such as **route, seat type, A/C type, ratings, fare range**, and **departure time**.
 
+  #### Home Page:
+  - Displays a welcome message along with a bus image.
+  - ![Home Screen](Images/Home_Screen.png)
 
-## Bus Filter Page:
-![Filters Screen](Images/Filters_Screen.png)
-Route Selection: Users can select the route they want to travel.
+  #### Bus Filter Page:
+  - Users can apply filters like:
+    - **Route Selection**: Choose the desired bus route.
+    - **Seat Type**: Filter by seat types (Seater, Sleeper, Seater/Sleeper, Semi Sleeper, etc.).
+    - **A/C Type**: Choose between A/C or Non-A/C buses.
+    - **Departure Time**: Select buses based on time range (e.g., 22:00 - 23:00).
+    - **Star Ratings**: Filter buses by user ratings (1 to 5).
+    - **Fare Range**: Select buses based on ticket price (e.g., ₹500 - ₹1000).
+    - 
+  - ![Filters Screen](Images/Filters_Screen.png)
 
-Seat Type: Filter buses by seat type (Seater, Sleeper, Seater / Sleeper, Semi Sleeper etc.).
+  #### Results Screen:
+  - After applying filters, the results display a table with available buses, including information such as:
+    - **Bus Name** - **Bus Type** - **Departure Time** - **Duration** - **Fare** - **Ratings** - **Seats Available**
+  - ![Results Screen](Images/Results_Screen.png)
 
-AC Type: Choose between A/C or Non-A/C buses.
-
-Departure Time: Filter buses based on departure time ranges.
-
-Star Ratings: Filter buses by user ratings.
-
-Fare Range: Choose a bus based on fare categories (e.g., 0-500, 500-1000).
-
-![Results Screen](Images/Results_Screen.png)
-Once filters are applied, the app displays a table of available buses with information on the bus name, type, departure time, duration, fare, ratings, and seat availability.
-
-### 4. Filter Logic
-The filters apply various transformations and constraints to the data: Seat type is categorized based on keywords like "seater" or "sleeper".
-A/C and Non-A/C options are detected using regex patterns. Users can filter results based on departure times and fare ranges.
+### 4. **Filter Logic**
+- The filtering mechanism applies various transformations and constraints to the dataset:
+  - **Seat Type Categorization**: Bus seat types (e.g., Seater, Sleeper) are categorized based on keywords.
+  - **A/C and Non-A/C Detection**: Uses **regex patterns** to match buses based on whether they have A/C or are non-A/C.
+  - **Time-Based Filtering**: Users can filter buses based on **departure time ranges**.
+  - **Fare Range Filtering**: Filters buses according to the selected price range.
 
 ## Technologies Used
-Python: Core language for the application.
-
-Streamlit: For the web interface.
-
-MySQL: For storing bus data.
-
-Selenium: For web scraping bus data from the RedBus site.
-
-Pandas: For data manipulation.
-
-Regex: To filter buses based on their A/C type.
+- **Python**: Core language for the application.
+- **Streamlit**: For building the web interface.
+- **MySQL**: For storing and managing bus data.
+- **Selenium**: For web scraping dynamic bus data from the RedBus website.
+- **Pandas**: For data manipulation and processing.
+- **Regex**: For detecting A/C and Non-A/C buses.
 
 ## Project Files
-Files are in --> env --> Scripts
-### 1. selenium_redbus_data_scraping.ipynb
-This notebook contains the script for scraping data from the RedBus website using Selenium and storing the data in a MySQL database.
 
-### 2. database.py
-Handles database connections and fetching data from the MySQL database.
-Processes the data by categorizing bus types and loading it into a Pandas DataFrame.
+The project files are located in the `env/Scripts` directory, and they include:
 
-### 3. RedBusProject.py
-The main Streamlit application script that defines the user interface.
-Includes logic to apply filters based on the user's selections and display filtered results in a table.
+1. **`selenium_redbus_data_scraping.ipynb`**:
+   - Jupyter notebook containing the web scraping script, which collects bus data from the RedBus website and stores it in a MySQL database.
 
-### 4. redbus_database.sql
-SQL file containing the structure and data of the MySQL database, including tables such as bus_routes.
+2. **`database.py`**:
+   - Handles the MySQL database connections and fetches bus route data.
+   - Processes and categorizes bus types using **Pandas** and returns the data for the app.
 
-### How to Run
-Prerequisites, Python 3.x, MySQL Server, Selenium WebDriver, Streamlit (pip install streamlit), Pandas (pip install pandas), MySQL Connector (pip install mysql-connector-python)
+3. **`RedBusProject.py`**:
+   - The main **Streamlit** application that defines the user interface.
+   - Contains the logic to apply filters based on user selections and displays the filtered bus results.
 
-#### Steps
-Clone the repository:
-git clone <repository_url>
-cd redbus-project
+4. **`redbus_database.sql`**:
+   - SQL file for setting up the database structure, including tables like `bus_routes`.
 
-#### Set up MySQL database:
-Create a MySQL database using the provided redbus_database.sql file.
-Ensure that the database details in database.py match your MySQL setup (username, password, host).
+## How to Run
 
-#### Run the Streamlit application:
-streamlit run RedBusProject.py
+### Prerequisites:
+Ensure you have the following installed:
+- **Python 3.x**
+- **MySQL Server**
+- **Selenium WebDriver**
+- **Streamlit** (`pip install streamlit`)
+- **Pandas** (`pip install pandas`)
+- **MySQL Connector** (`pip install mysql-connector-python`)
 
-#### Scrape Data:
-If needed, use the selenium_redbus_data_scraping.ipynb notebook to scrape new data from RedBus and populate your database.
+### Steps:
 
-## Future Enhancements
-Advanced Filters: Add more granular filters such as bus operator, bus amenities, and travel duration.
-Live Data: Integrate real-time bus data updates from RedBus's API.
-Booking Links: Provide direct links to book buses via RedBus.
+1. **Clone the repository**:
+   ```bash
+   git clone <repository_url>
+   cd redbus-project
 
-## Contributing
-Feel free to contribute to this project by submitting pull requests or opening issues for any bugs or feature requests.
+## Set up MySQL Database:
+
+1. **Create a MySQL Database**:
+   - Use the provided `redbus_database.sql` file to set up the required database.
+   - Ensure that the **database connection details** (username, password, host, etc.) in `database.py` match your MySQL setup.
+
+2. **Run the Streamlit Application**:
+   - To run the application, use the following command:
+     ```bash
+     streamlit run RedBusProject.py
+     ```
+
+## Scrape Data (if required):
+
+- If you need to scrape new data from the RedBus website, use the `selenium_redbus_data_scraping.ipynb` notebook.
+- The notebook will collect and populate new bus route data into the MySQL database.
+
+## Future Enhancements:
+
+1. **Advanced Filters**:
+   - Add more detailed filtering options, such as:
+     - Bus operator
+     - Bus amenities (WiFi, charging ports)
+     - Travel duration
+
+2. **Live Data Integration**:
+   - Integrate real-time bus data using the **RedBus API** to provide up-to-the-minute bus availability and pricing.
+
+3. **Booking Links**:
+   - Provide direct links that allow users to book buses through RedBus after filtering.
+
+## Contributing:
+
+- Contributions are welcome! Feel free to submit **pull requests** or open **issues** for any bugs, feature requests, or improvements.
+- Let me know if you need any further changes or assistance!
