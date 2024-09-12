@@ -36,10 +36,8 @@ Fare Range: Choose a bus based on fare categories (e.g., 0-500, 500-1000).
 Once filters are applied, the app displays a table of available buses with information on the bus name, type, departure time, duration, fare, ratings, and seat availability.
 
 ### 4. Filter Logic
-The filters apply various transformations and constraints to the data:
-Seat type is categorized based on keywords like "seater" or "sleeper".
-A/C and Non-A/C options are detected using regex patterns.
-Users can filter results based on departure times and fare ranges.
+The filters apply various transformations and constraints to the data: Seat type is categorized based on keywords like "seater" or "sleeper".
+A/C and Non-A/C options are detected using regex patterns. Users can filter results based on departure times and fare ranges.
 
 ## Technologies Used
 Python: Core language for the application.
