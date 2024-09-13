@@ -2,6 +2,19 @@
 
 This project is a **Streamlit-based web application** designed to help users filter and display bus services from the **RedBus dataset**. The project fetches data from a **MySQL database**, which is populated by scraping data from the **RedBus website** using **Selenium**. The web application offers users a set of customizable filters to narrow down bus options based on their preferences, such as **route, seat type, A/C type, ratings, fare, and departure time**.
 
+## Problem Statement
+
+The "RedBus Data Scraping and Filtering Application" seeks to transform bus travel management by automating the extraction, analysis, and visualization of bus travel data. By utilizing **Selenium** for web scraping, this project efficiently collects data on bus routes, schedules, prices, and seat availability. By streamlining data collection and providing tools for decision-making, this solution aims to improve the overall user experience in the transportation industry and drive data-driven decisions.
+
+## Business Use Cases
+
+This solution can be applied to multiple business scenarios, including:
+
+- **Travel Aggregators**: Display real-time bus schedules and seat availability to customers.
+- **Market Analysis**: Analyze travel patterns and preferences for research and optimization.
+- **Customer Service**: Offer customized travel options based on user data insights.
+- **Competitor Analysis**: Compare pricing, services, and travel options with competitors to gain a market edge.
+  
 ## Features
 
 ### 1. **Data Scraping Using Selenium**
@@ -52,7 +65,28 @@ This project is a **Streamlit-based web application** designed to help users fil
 - **Selenium**: For web scraping dynamic bus data from the RedBus website.
 - **Pandas**: For data manipulation and processing.
 - **Regex**: For detecting A/C and Non-A/C buses.
+  
+---
 
+## Database Schema
+
+The scraped data is stored in a `bus_routes` table with the following schema:
+
+| Column           | Data Type | Description                           |
+|------------------|-----------|---------------------------------------|
+| id               | INT       | Primary Key (Auto-increment)          |
+| route_name       | TEXT      | Name of the bus route                 |
+| route_link       | TEXT      | Link to route details                 |
+| busname          | TEXT      | Name of the bus operator              |
+| bustype          | TEXT      | Type of bus (Seater, Sleeper, etc.)    |
+| departing_time   | TIME      | Departure time                        |
+| duration         | TEXT      | Duration of the journey               |
+| reaching_time    | TIME      | Arrival time                          |
+| star_rating      | FLOAT     | User rating of the bus                |
+| price            | DECIMAL   | Ticket price                          |
+| seats_available  | INT       | Number of available seats             |
+
+---
 ## Project Files
 
 The project files are located in the `env/Scripts` directory, and they include:
