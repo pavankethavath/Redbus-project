@@ -6,9 +6,30 @@ from database import get_processed_data  # Importing database functions
 df = get_processed_data()
 
 seat_types = ['Select...', 'Seater', 'Sleeper', 'Seater / Sleeper', 'Semi Sleeper', 'Others']
-time_ranges = [f"{t.strftime('%H:%M')} - {(t + pd.Timedelta(hours=1)).strftime('%H:%M')}" 
-               for t in pd.date_range("00:00", "23:00", freq="H")]
 price_ranges = [f"{i}-{i+500}" for i in range(0, 2501, 500)]
+
+# Function to get consecutive 2-hour time windows
+def get_available_time_ranges(route_data):
+    # Extract the bus departure times
+    available_times = route_data['departing_time'].apply(lambda t: f"{t.components.hours:02}:{t.components.minutes:02}")
+    
+    # Create 2-hour time ranges, starting from 00:00 to 23:59
+    all_time_ranges = []
+    for hour in range(0, 24, 2):  # Increment by 2 hours
+        start_time = f"{hour:02}:00"
+        end_time = f"{(hour + 2) % 24:02}:00"
+        all_time_ranges.append(f"{start_time} - {end_time}")
+
+    # Filter time ranges that contain at least one available bus
+    available_time_ranges = set()
+    for time in available_times:
+        hour = int(time.split(':')[0])
+        start_time = f"{(hour // 2) * 2:02}:00"  # Get the closest 2-hour range start time
+        end_time = f"{(hour // 2) * 2 + 2:02}:00"  # Calculate the corresponding end time
+        available_time_ranges.add(f"{start_time} - {end_time}")
+
+    # Return only the 2-hour windows where buses are available, sorted
+    return sorted(available_time_ranges)
 
 # Sidebar Buttons
 st.sidebar.title("Main Menu")
@@ -54,14 +75,25 @@ elif st.session_state.page == "filter":
     with row1_col3: 
         ac_type = st.selectbox('Select AC Type', ['Select...', 'A/C', 'Non A/C'])
 
+    # Initialize available_time_ranges as ['Select...'] by default
+    available_time_ranges = ['Select...']
+
+    # Update available_time_ranges if a route is selected
+    if route_name != 'Select...':
+        # Filter data by the selected route
+        route_data = df[df['route_name'] == route_name]
+        
+        # Get available time windows for this route
+        available_time_ranges = ['Select...'] + get_available_time_ranges(route_data)
 
     row2_col1, row2_col2, row2_col3 = st.columns([1, 1, 1])  
 
     with row2_col1:
-        depart_time = st.selectbox('Starting time', ['Select...'] + time_ranges)
+        depart_time = st.selectbox('Starting time', available_time_ranges)
 
     with row2_col2:
-        star_rating = st.selectbox('Select Ratings', ['Select...', '1 to 2', '2 to 3', '3 to 4', '4 to 5'])
+        # Replacing dropdown for ratings with a slider (integer values only)
+        star_rating = st.slider('Select Ratings', 1, 5, (1, 5))  # Slider for selecting rating range (min 1, max 5)
 
     with row2_col3: 
         bus_fare_range = st.selectbox('Bus Fare Range', ['Select...'] + price_ranges)
@@ -87,9 +119,8 @@ elif st.session_state.page == "filter":
         elif ac_type == 'Non A/C':
             df = df[df['bustype'].str.contains('Non A/C|Non AC|NON A/C|NON-AC', case=False, regex=True)]
 
-        if star_rating != 'Select...':
-            star_range = star_rating.split(' to ')
-            df = df[(df['star_rating'] >= float(star_range[0])) & (df['star_rating'] <= float(star_range[1]))]
+        # Filtering by the selected rating range from the slider (integer values)
+        df = df[(df['star_rating'] >= star_rating[0]) & (df['star_rating'] <= star_rating[1])]
 
         # Filtering by the selected departure time 
         if depart_time != 'Select...':
