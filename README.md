@@ -1,7 +1,7 @@
 # RedBus Data Scraping and Dynamic Filtering Application
 
 This project is a **Streamlit-based web application** designed to help users filter and display bus services from the **RedBus dataset**. The project fetches data from a **MySQL database**, which is populated by scraping data from the **RedBus website** using **Selenium**. The web application offers users a set of customizable filters to narrow down bus options based on their preferences, such as **route, seat type, A/C type, ratings, fare, and departure time**.
-
+ 
 ## Problem Statement
 
 The "RedBus Data Scraping and Filtering Application" seeks to transform bus travel management by automating the extraction, analysis, and visualization of bus travel data. By utilizing **Selenium** for web scraping, this project efficiently collects data on bus routes, schedules, prices, and seat availability. By streamlining data collection and providing tools for decision-making, this solution aims to improve the overall user experience in the transportation industry and drive data-driven decisions.
